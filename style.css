@@ -1,0 +1,338 @@
+/* ==========================================
+   1. 通常時（ブラウザ画面で見ているとき）
+   ========================================== */
+.media-figure {
+  width: 50%;
+  max-width: 500px;
+  height: auto;
+}
+
+
+/* indexページのボタン設定 */
+.index-button {
+  font-size: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  padding: 10px 15px;
+  width: 500px;
+}
+
+/* こういった記述がCSSのどこかにある場合 */
+button:hover {
+    background-color: #ddd;
+}
+
+.parent-container {
+    display: flex;
+    flex-direction: column; /* 縦に並べる */
+    align-items: center;    /* 横方向の中央揃え */
+    gap: 15px;              /* ボタン同士の間隔 */
+}
+
+.header-section, .title-area {
+  margin-bottom: 0px;
+  padding-bottom: 0;
+}
+
+/* 入力ボックス全体の基本スタイル */
+input[type="text"],
+input[type="date"] {
+  width: 160px;
+  box-sizing: border-box;
+}
+
+textarea {
+  width: 95%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.a4-page {
+  width: 210mm;
+  min-height: 297mm;
+  background: white;
+  margin: auto;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  border-color: #0066cc;
+  outline: none;
+}
+
+/* レイアウト・コンテナ設定 */
+.container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.profile-row {
+  display: flex;
+}
+
+.profile-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  white-space: nowrap;
+  min-width: 100px;
+}
+
+.form-group input[type="date"] {
+  width: 200px;
+}
+
+/* 表のデザイン */
+.fim-table {
+  border-collapse: collapse;
+  width: 95%;
+  font-size: 14px;
+  text-align: center;
+}
+
+.fim-table th, 
+.fim-table td {
+  border: 1px solid #333;
+  padding: 6px 8px;
+}
+
+.fim-table th {
+  background-color: #f2f2f2;
+}
+
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-weight: bold;
+  letter-spacing: 4px;
+}
+
+.subtotal-row, .total-row {
+  font-weight: bold;
+  background-color: #fafafa;
+}
+
+.fim-table select {
+  width: 100%;
+  padding: 4px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.fim-table select:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
+
+/* 通常時は印刷用テキストを隠す */
+.print-value {
+  display: none !important;
+}
+
+.inline-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.inline-group p,
+.inline-group span {
+  display: inline-block;
+  margin: 0;
+}
+
+.inline-group select {
+  display: inline-block;
+  width: auto;
+}
+
+.signature-container {
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+  margin-top: 15px;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;
+  white-space: nowrap;
+}
+
+.sub-item {
+  padding-left: 12px;
+  font-size: 11.5px;
+}
+
+/* --- 5番項目の縦揃え調整エリア --- */
+.fifth-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  margin-bottom: 6px;
+}
+
+.fifth-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 550px; /* 必要に応じて全幅の調整可能 */
+}
+
+.fifth-select-group {
+  display: flex;
+  align-items: center;
+  min-width: 60px;
+}
+
+
+/* ==========================================
+   2. 印刷時（印刷プレビュー・PDF出力のとき）
+   ========================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm 10mm;
+  }
+
+  body {
+    font-size: 11.5px !important;
+    line-height: 1.25 !important;
+  }
+
+  h1, h2, h3, p, .section-title {
+    font-size: 13px !important;
+    font-weight: bold !important;
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+  }
+
+  table {
+    margin-bottom: 6px !important;
+  }
+
+  th, td {
+    padding: 2px 4px !important;
+    font-size: 10px !important;
+    font-weight: normal !important;
+  }
+
+  /* 表の外の入力欄（input / select）は非表示 */
+  :not(td) > input[type="text"],
+  :not(td) > input[type="date"],
+  :not(td) > select {
+    display: none !important;
+  }
+
+  /* 表の中の input / select は枠線を消してそのまま表示 */
+  td input,
+  td select {
+    display: block !important;
+    border: none !important;
+    background: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+    color: #000 !important;
+    font-size: inherit !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+  }
+
+  /* 印刷用テキストの表示設定 */
+  .print-value {
+    display: inline-block !important;
+    min-width: 30px;
+    margin-left: 5px;
+    margin-right: 5px;
+    vertical-align: middle;
+    font-size: 10px !important;
+    font-weight: normal !important;
+    color: #000 !important;
+  }
+
+  /* 5番のあり・なしの位置合わせ */
+  .fifth-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    line-height: 1.4 !important;
+  }
+
+  .fifth-row .print-value {
+    font-size: 12px !important;
+    font-weight: bold !important;
+  }
+
+  .rehab-start-group {
+    text-align: right !important;
+    margin-right: 10px !important;
+    font-weight: normal !important;
+    font-size: 10px !important;
+  }
+
+  .signature-left {
+    text-align: left !important;
+    float: left !important;
+    margin-left: 0 !important;
+  }
+
+  textarea {
+    display: block !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    background: transparent !important;
+    resize: none !important;
+    color: #000 !important;
+    font-family: inherit;
+    font-size: 10px !important;
+    font-weight: normal !important;
+  }
+
+  textarea::placeholder,
+  input::placeholder {
+    color: transparent !important;
+  }
+
+  textarea + .print-value {
+    display: none !important;
+  }
+
+  .page-break-before {
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+
+  .inline-group select {
+    display: none !important;
+  }
+
+  .inline-group .print-value {
+    display: inline-block !important;
+    min-width: 40px;
+  }
+  /* button タグをすべて非表示にする */
+  button {
+    display: none !important;
+  }
+}

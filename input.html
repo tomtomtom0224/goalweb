@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<!-- header------------------------------------------------------------------>
+<head class="a4-page">
+  <meta charset="utf-8">
+  <title>目標設定管理シート
+  </title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="a4-page">
+<!-- body------------------------------------------------------------------>
+  <div>
+    <div class="profile-container">
+      <div><p>別紙様式23の5</p></div>
+      <div class="no-print" style="margin: 20px 0;">
+       <!--  <button type="button" onclick="saveData()">JSONで保存（ダウンロード）</button>
+        <input type="file" id="load-file" accept=".json" onchange="loadData(event)" style="display:none;">
+        <button type="button" onclick="document.getElementById('load-file').click()">JSONを読み込んで修正</button>-->
+        <button type="button" onclick="saveAndReturn()"style="padding: 10px 15px;">保存して一覧に戻る</button>
+        <a href="index.html" style="margin-left: 10px;"><button type="button" style="padding: 10px 15px;">キャンセル（一覧へ）</button></a>
+      </div>
+    </div>
+    <h1 style="text-align: center;">目標設定支援・管理シート</h1>  </div>
+    <div class="profile-container">
+      <div class="form-group">
+        <label for="name">患者氏名：</label>
+        <input type="text" id="name"placeholder="例：山田 太郎">
+        <span class="print-value"></span>
+      </div>
+      <div>
+        <div class="form-group">
+          <label for="created-date">作成日</label>
+          <input type="date" id="created-date"> 
+          <span class="print-value"></span>
+        </div>
+        <div class="form-group">
+          <label for="explain-date">説明・交付日</label>
+          <input type="date" id="explain-date"> 
+          <span class="print-value"></span>
+        </div>
+        <div class="form-group">
+          <label for="birth-date">生年月日</label>
+          <input type="date" id="birth-date">  
+          <span class="print-value"></span>
+        </div>
+      </div>
+    </div>    
+
+
+<!-- １．発症からの経過------------------------------------------------------------------>
+<div class="profile-container">
+  <p>１．発症からの経過</p>
+  <div class="form-group rehab-start-group">
+    <label for="start-date">(リハビリテーション開始日</label>
+    <input type="date" id="start-date">
+    <span class="print-value"></span>)
+  </div>
+</div>
+<table class="fim-table">
+  <tbody>
+    <td>
+    <!-- 複数行のテキストボックス -->
+    <textarea rows="4" cols="40" id="progress-onset"placeholder="ここに詳細を入力します"></textarea>
+    </td>
+  </tbody>
+</table>
+<!-- ２．ＡＤＬ評価------------------------------------------------------------------>
+<p>２．ＡＤＬ評価（Barthel IndexまたはFIMによる評価）（リハビリ開始時及び現時点） </p> 
+<!-- Barthel Index------------------------------------------------------------------>
+<p>Barthel Indexの場合</p>
+<table class="fim-table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>リハビリテーション開始時点</th>
+      <th >現時点</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>食事</td>
+      <td>
+      <select class="score-select-BIS" id="mealBIS">
+        <option value="">-</option>
+        <option value="10">10 (自立)</option>
+        <option value="5">5 (一部介助)</option>
+        <option value="0">0 (全介助)</option>
+      </select></td>
+      <td>
+
+      <select class="score-select-BIN" id="mealBIN">
+        <option value="">-</option>
+        <option value="10">10 (自立)</option>
+        <option value="5">5 (一部介助)</option>
+        <option value="0">0 (全介助)</option>
+      </select>
+      </td>
+    </tr>
+    <tr>
+      <td>移乗</td>
+      <td>
+      <select class="score-select-BIS" id="transferBIS" >
+        <option value="">-</option>
+        <option value="15">15 (自立)</option>
+        <option value="10">10 (一部介助)</option>
+        <option value="5">5 (一部介助)</option>
+        <option value="0">0 (全介助)</option>
+      </select></td>
+      <td>
+      <select class="score-select-BIN" id="transferBIN" >
+        <option value="">-</option>
+        <option value="15">15 (自立)</option>
+        <option value="10">10 (一部介助)</option>
+        <option value="5">5 (一部介助)</option>
+        <option value="0">0 (全介助)</option>
+      </select>
+      </td>
+    </tr>
+    <tr>
+      <td>整容</td>
+      <td>
+      <select class="score-select-BIS" id="groomingBIS" >
+        <option value="">-</option>
+        <option value="5">5 (自立)</option>
+        <option value="0">0 (一部介助・全介助)</option>
+      </select></td>
+      <td>
+      <select class="score-select-BIN" id="groomingBIN" >
+        <option value="">-</option>
+        <option value="5">5 (自立)</option>
+        <option value="0">0 (一部介助・全介助)</option>
+      </select>
+      </td>
+    </tr>  
+    <tr>
+      <td>トイレ動作</td>
+      <td>
+      <select class="score-select-BIS" id="toiletBIS" >
+        <option value="">-</option>
+        <option value="10">10 (自立)</option>
+        <option value="5">5 (一部介助)</option>
+        <option value="0">0 (全介助)</option>
+      </select></td>
+      <td>
+      <select class="score-select-BIN" id="toiletBIN" >
+        <option value="">-</option>
+        <option value="10">10 (自立)</option>
+        <option value="5">5 (一部介助)</option>
+        <option value="0">0 (全介助)</option>
+      </select>
+      </td>
+    </tr>
+    <tr>
+      <td>入浴</td>
+      <td>
+      <select class="score-select-BIS" id="bathBIS" >
+        <option value="">-</option>
+        <option value="5">5 (自立)</option>
+        <option value="0">0 (一部介助・全介助)</option>
+      </select></td>
+      <td>
+      <select class="score-select-BIN" id="bathBIN" >
+        <option value="">-</option>
+        <option value="5">5 (自立)</option>
+        <option value="0">0 (一部介助・全介助)</option>
+      </select>
+      </td>
+    </tr> 
+    <tr>
+      <td>平地歩行</td>
+      <td>
+      <select class="score-select-BIS" id="walkingBIS" >
+        <option value="">-</option>
+        <option value="15">15 (自立)</option>
+        <option value="10">10 (一部介助)</option>
+        <option value="5">5 (一部介助)</option>
+        <option value="0">0 (全介助)</option>
+      </select></td>
+      <td>
+      <select class="score-select-BIN" id="walkingBIN" >
+        <option value="">-</option>
+        <option value="15">15 (自立)</option>
+        <option value="10">10 (一部介助)</option>
+        <option value="5">5 (一部介助)</option>
+        <option value="0">0 (全介助)</option>
+      </select>
+      </td>
+    </tr> 
+    <tr>
+      <td>階段</td>
+      <td>
+      <select class="score-select-BIS" id="stairsBIS" >
+        <option value="">-</option>
+        <option value="10">10 (自立)</option>
+        <option value="5">5 (一部介助)</option>
+        <option value="0">0 (全介助)</option>
+      </select></td>
+      <td>
+      <select class="score-select-BIN" id="stairsBIN" >
+        <option value="">-</option>
+        <option value="10">10 (自立)</option>
+        <option value="5">5 (一部介助)</option>
+        <option value="0">0 (全介助)</option>
+      </select>
+      </td>
+    </tr> 
+    <tr>
+      <td>更衣</td>
+      <td>
+      <select class="score-select-BIS" id="dressingBIS" >
+        <option value="">-</option>
+        <option value="10">10 (自立)</option>
+        <option value="5">5 (一部介助)</option>
+        <option value="0">0 (全介助)</option>
+      </select></td>
+      <td>
+      <select class="score-select-BIN" id="dressingBIN">
+        <option value="">-</option>
+        <option value="10">10 (自立)</option>
+        <option value="5">5 (一部介助)</option>
+        <option value="0">0 (全介助)</option>
+      </select>
+      </td>
+    </tr> 
+    <tr>
+      <td>排尿管理</td>
+      <td>
+      <select class="score-select-BIS" id="urinationBIS" >
+        <option value="">-</option>
+        <option value="10">10 (自立)</option>
+        <option value="5">5 (一部介助)</option>
+        <option value="0">0 (全介助)</option>
+      </select></td>
+      <td>
+      <select class="score-select-BIN" id="urinationBIN" >
+        <option value="">-</option>
+        <option value="10">10 (自立)</option>
+        <option value="5">5 (一部介助)</option>
+        <option value="0">0 (全介助)</option>
+      </select>
+      </td>
+    </tr> 
+    <tr>
+      <td>排便管理</td>
+      <td>
+      <select class="score-select-BIS" id="defecationBIS">
+        <option value="">-</option>
+        <option value="10">10 (自立)</option>
+        <option value="5">5 (一部介助)</option>
+        <option value="0">0 (全介助)</option>
+      </select></td>
+      <td>
+      <select class="score-select-BIN" id="defecationBIN" >
+        <option value="">-</option>
+        <option value="10">10 (自立)</option>
+        <option value="5">5 (一部介助)</option>
+        <option value="0">0 (全介助)</option>
+      </select>
+      </td>
+    </tr> 
+    <tr>
+      <td>合計</td>
+      <td id="bi-start-total">0</td>
+      <td id="bi-now-total">0</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- FIM------------------------------------------------------------------>
+<p>FIMによる評価の場合</p>
+<table class="fim-table">
+  <thead>
+    <tr>
+      <th rowspan="2">大項目</th>
+      <th rowspan="2">中項目</th>
+      <th rowspan="2">小項目</th>
+      <th >リハビリテーション開始時点</th>
+      <th >現時点</th>
+    </tr>
+    <tr>
+      <th>得点</th>
+      <th>得点</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- 運動項目 -->
+    <tr>
+      <td rowspan="14" class="vertical-text">運動</td>
+      <td rowspan="6">セルフケア</td>
+      <td>食事</td>
+      <td>
+      <select class="score-selectFIMS score-motorFIMS" id="mealFIMS" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select></td>
+      <td>
+      <select class="score-selectFIMN score-motorFIMN" id="mealFIMN" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+    </tr>
+    <tr>
+      <td>整容</td>
+      <td>
+      <select class="score-selectFIMS score-motorFIMS" id="groomingFIMS" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+      <td>
+      <select class="score-selectFIMN score-motorFIMN" id="groomingFIMN" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+    </td>
+    </tr>
+    <tr>
+      <td>清拭・入浴</td>
+      <td>
+      <select class="score-selectFIMS score-motorFIMS" id="bathingFIMS" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+      <td>
+      <select class="score-selectFIMN score-motorFIMN" id="bathingFIMN" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+    </td>
+    </tr>
+    <tr>
+      <td>更衣（上半身）</td>
+      <td>
+      <select class="score-selectFIMS score-motorFIMS" id="dressingUpperFIMS" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+      <td>
+      <select class="score-selectFIMN score-motorFIMN" id="dressingUpperFIMN" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+    </tr>
+    <tr>
+      <td>更衣（下半身）</td>
+      <td>
+      <select class="score-selectFIMS score-motorFIMS" id="dressingLowerFIMS" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+      <td>
+      <select class="score-selectFIMN score-motorFIMN" id="dressingLowerFIMN" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+    </tr>
+    <tr>
+      <td>トイレ</td>
+      <td>
+      <select class="score-selectFIMS score-motorFIMS" id="toiletFIMS" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+      <td>
+      <select class="score-selectFIMN score-motorFIMN" id="toiletFIMN" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td rowspan="2">排泄</td>
+      <td>排尿コントロール</td>
+      <td>
+      <select class="score-selectFIMS score-motorFIMS" id="urinationFIMS" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+      <td>
+      <select class="score-selectFIMN score-motorFIMN" id="urinationFIMN" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+    </tr>
+    <tr>
+      <td>排便コントロール</td>
+      <td>
+      <select class="score-selectFIMS score-motorFIMS" id="defecationFIMS" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+      <td>
+      <select class="score-selectFIMN score-motorFIMN" id="defecationFIMN" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td rowspan="3">移乗</td>
+      <td>ベッド、椅子、車椅子</td>
+      <td>
+      <select class="score-selectFIMS score-motorFIMS" id="transferFIMS" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+      <td>
+      <select class="score-selectFIMN score-motorFIMN" id="transferFIMN" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+    </tr>
+    <tr>
+      <td>トイレ</td>
+      <td>
+      <select class="score-selectFIMS score-motorFIMS" id="transfertoiletFIMS" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+      <td>
+      <select class="score-selectFIMN score-motorFIMN" id="transfertoiletFIMN" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+    </tr>
+    <tr>
+      <td>浴槽・シャワー</td>
+      <td>
+      <select class="score-selectFIMS score-motorFIMS" id="transferbathFIMS" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+      <td>
+      <select class="score-selectFIMN score-motorFIMN" id="transferbathFIMN" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td rowspan="2">移動</td>
+      <td>歩行 / 車椅子</td>
+      <td>
+      <select class="score-selectFIMS score-motorFIMS" id="walkingFIMS" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+      <td>
+      <select class="score-selectFIMN score-motorFIMN" id="walkingFIMN" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+    </tr>
+    <tr>
+      <td>階段</td>
+      <td>
+      <select class="score-selectFIMS score-motorFIMS" id="stairsFIMS" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+    </td>
+      <td>
+      <select class="score-selectFIMN score-motorFIMN" id="stairsFIMN" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>  
+      </td>
+    </tr>
+
+    <!-- 小計 -->
+    <tr class="subtotal-row">
+      <td colspan="2">小計</td>
+      <td id="motor-start-subtotal">0</td>
+      <td id="motor-NOW-subtotal">0</td>
+    </tr>
+
+    <!-- 認知項目 -->
+    <tr>
+      <td rowspan="6" class="vertical-text">認知</td>
+      <td rowspan="2">コミュニケーション</td>
+      <td>理解</td>
+      <td>
+      <select class="score-selectFIMS score-cognitiveFIMS" id="understandFIMS" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+      <td>
+      <select class="score-selectFIMN score-cognitiveFIMN" id="understandFIMN" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+    </tr>
+    <tr>
+      <td>表出</td>
+      <td>
+      <select class="score-selectFIMS score-cognitiveFIMS" id="expressFIMS" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+      <td>
+      <select class="score-selectFIMN score-cognitiveFIMN" id="expressFIMN" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td rowspan="3">社会認識</td>
+      <td>社会的交流</td>
+      <td>
+      <select class="score-selectFIMS score-cognitiveFIMS" id="socialFIMS" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+      <td>
+      <select class="score-selectFIMN score-cognitiveFIMN" id="socialFIMN" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+    </tr>
+    <tr>
+      <td>問題解決</td>
+      <td>
+      <select class="score-selectFIMS score-cognitiveFIMS" id="problemFIMS" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+      <td>
+      <select class="score-selectFIMN score-cognitiveFIMN" id="problemFIMN" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+    </tr>
+    <tr>
+      <td>記憶</td>
+      <td>
+      <select class="score-selectFIMS score-cognitiveFIMS" id="memoryFIMS" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+      <td>
+      <select class="score-selectFIMN score-cognitiveFIMN" id="memoryFIMN" >
+        <option value="">-</option>
+        <option value="7">7 (完全自立)</option>
+        <option value="6">6 (修正自立)</option>
+        <option value="5">5 (監視・準備)</option>
+        <option value="4">4 (最小介助)</option>
+        <option value="3">3 (中等度介助)</option>
+        <option value="2">2 (重度介助)</option>
+        <option value="1">1 (全介助)</option>
+      </select>
+      </td>
+    </tr>
+
+    <!-- 認知小計 -->
+    <tr class="subtotal-row">
+      <td colspan="2">小計</td>
+      <td id="cognitive-start-subtotal">0</td>
+      <td id="cognitive-NOW-subtotal">0</td>
+    </tr>
+
+    <!-- 合計 -->
+    <tr class="total-row">
+      <td colspan="3">合計</td>
+      <td id="start-total">0</td>
+      <td id="now-total">0</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ３．目標------------------------------------------------------------------>
+<div class="page-break-before"></div>
+<p>３．現在リハビリテーションの目標としているもの、及び現在のリハビリテーションの内
+容との関連  </p> 
+
+<table class="fim-table">
+  <tr>
+    <th></th>
+    <th>目標としているもの</th>
+    <th>関連する現在のリハビリテーションの内容</th>
+  </tr>
+    <tr>
+    <td>心身機能</td>
+    <td>
+      <textarea rows="4" cols="40" id="goal-function" placeholder="ここに詳細を入力します"></textarea>
+    </td>
+    <td>
+      <textarea rows="4" cols="40" id="related-function" placeholder="ここに詳細を入力します"></textarea>
+    </td>
+  </tr>
+</table>
+<br>
+<table class="fim-table">
+  <tr>
+    <td>　活動　</td>
+    <td>
+      <textarea rows="4" cols="40" id="goal-activity" placeholder="ここに詳細を入力します"></textarea>
+    </td>
+    <td>
+      <textarea rows="4" cols="40" id="related-activity" placeholder="ここに詳細を入力します"></textarea>
+    </td>
+  </tr>
+</table>
+<br>
+<table class="fim-table">
+  <tr>
+    <td>社会参加</td>
+    <td>
+      <textarea rows="4" cols="40" id="goal-social" placeholder="ここに詳細を入力します"></textarea>
+    </td>
+    <td>
+      <textarea rows="4" cols="40" id="related-social" placeholder="ここに詳細を入力します"></textarea>
+    </td>
+  </tr>
+</table>
+
+<!-- ４．今後の心身機能、活動及び社会参加に関する見通し------------------------------------------------------------------>
+<p>４．今後の心身機能、活動及び社会参加に関する見通し</p> 
+<div class="pr-card"> 
+  <p>・医師の説明の内容 </p>
+  <table class="fim-table">
+  <tbody>
+    <td>
+      <textarea rows="4" cols="40" id="physician-explanation" placeholder="ここに詳細を入力します"></textarea>
+    </td>
+  </tbody>
+  </table>
+  <p>・患者の受け止め </p>
+  <table class="fim-table">
+  <tbody>
+    <td>
+      <textarea rows="4" cols="40" id="patient-acceptance" placeholder="ここに詳細を入力します"></textarea>
+    </td>
+  </tbody>
+  </table>
+</div>
+    <!-- ５．介護保険のリハビリテーションの見通し------------------------------------------------------------------>
+<!-- ５．介護保険のリハビリテーションの利用の見通し -->
+<div class="fifth-container">
+  <!-- 1行目：利用の見通し -->
+  <div class="fifth-row">
+    <span class="section-title">５．介護保険のリハビリテーションの利用の見通し</span>
+    <div class="fifth-select-group">
+      <select class="score-select" id="rehabilitation-forecast">
+        <option value="1">あり</option>
+        <option value="2">なし</option>
+      </select>
+      <span class="print-value"></span>
+    </div>
+  </div>
+
+  <!-- 2行目：紹介の必要性 -->
+  <div class="fifth-row">
+    <span class="section-title">  介護保険のリハビリテーションサービス等の紹介の必要性</span>
+    <div class="fifth-select-group">
+      <select class="score-select" id="introduction-necessity">
+        <option value="1">あり</option>
+        <option value="2">なし</option>
+      </select>
+      <span class="print-value"></span>
+    </div>
+  </div>
+</div>
+
+<p>紹介した事業所名</p>
+<table class="fim-table">
+  <tr>
+    <td>事業所名</td>
+    <td>連絡方法</td>
+    <td>備考（事業所の特徴等）</td>
+  </tr>
+  <tr>
+    <td>
+      <textarea rows="1" cols="20" id="facility-name1" placeholder="ここに詳細を入力します"></textarea>
+    </td>
+    <td>
+      <textarea rows="1" cols="20" id="contact-method1" placeholder="ここに詳細を入力します"></textarea>
+    </td>
+    <td>
+      <textarea rows="1" cols="20" id="remarks1" placeholder="ここに詳細を入力します"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <textarea rows="1" cols="20" id="facility-name2" placeholder="ここに詳細を入力します"></textarea>
+    </td>
+    <td>
+      <textarea rows="1" cols="20" id="contact-method2" placeholder="ここに詳細を入力します"></textarea>
+    </td>
+    <td>
+      <textarea rows="1" cols="20" id="remarks2" placeholder="ここに詳細を入力します"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <textarea rows="1" cols="20" id="facility-name3" placeholder="ここに詳細を入力します"></textarea>
+    </td>
+    <td>
+      <textarea rows="1" cols="20" id="contact-method3" placeholder="ここに詳細を入力します"></textarea>
+    </td>
+    <td>
+      <textarea rows="1" cols="20" id="remarks3" placeholder="ここに詳細を入力します"></textarea>
+    </td>
+  </tr>
+  </table>
+  <br>
+  <br>
+<div class="signature-container">
+  <div class="signature-left">説明医師署名：</div>
+  <div class="signature-right">患者又は家族署名：</div>
+</div>
+
+<script>
+// 1. 印刷用テキスト（日付やあり・なし等）を更新する共通関数
+function updatePrintValues() {
+  // すべての入力要素（input, select, textarea）を巡回
+  document.querySelectorAll('input, select, textarea').forEach(function(el) {
+    const printSpan = el.nextElementSibling;
+    if (printSpan && printSpan.classList.contains('print-value')) {
+      if (el.tagName === 'SELECT') {
+        // セレクトボックスの選択テキストをセット
+        printSpan.textContent = el.options[el.selectedIndex] ? el.options[el.selectedIndex].text : '';
+      } else if (el.type === 'date') {
+        if (!el.value) {
+          // 未入力の場合：\u3000を使って確実に全角スペースを4つずつ差し込む
+          printSpan.textContent = '\u3000\u3000\u3000\u3000年\u3000\u3000\u3000\u3000月\u3000\u3000\u3000\u3000日';
+        } else {
+          // 入力ありの場合（YYYY年MM月DD日表記）
+          const [y, m, d] = el.value.split('-');
+          printSpan.textContent = `${y}年${m}月${d}日`;
+        }
+      } else {
+        // テキスト入力等
+        printSpan.textContent = el.value;
+      }
+    }
+  });
+}
+
+// 2. 共通の集計・表示関数
+function calculateSubtotal(selectClass, targetId) {
+  let total = 0;
+  const selects = document.querySelectorAll(selectClass);
+  selects.forEach(select => {
+    total += Number(select.value) || 0;
+  });
+
+  const target = document.getElementById(targetId);
+  if (target) {
+    target.textContent = total;
+  }
+  return total;
+}
+
+// --- BI（Barthel Index） ---
+function biStarttotal() {
+  return calculateSubtotal('.score-select-BIS', 'bi-start-total');
+}
+
+function biNowtotal() {
+  return calculateSubtotal('.score-select-BIN', 'bi-now-total');
+}
+
+// --- FIM（機能的自立度評価法） ---
+function FIMmotorstarttotal() {
+  return calculateSubtotal('.score-motorFIMS', 'motor-start-subtotal');
+}
+
+function FIMmotornowtotal() {
+  return calculateSubtotal('.score-motorFIMN', 'motor-NOW-subtotal');
+}
+
+function FIMcognitivestarttotal() {
+  return calculateSubtotal('.score-cognitiveFIMS', 'cognitive-start-subtotal');
+}
+
+function FIMcognitivenowtotal() {
+  return calculateSubtotal('.score-cognitiveFIMN', 'cognitive-NOW-subtotal');
+}
+
+// --- 全体の再計算処理 ---
+function recalculateAll() {
+  const biStart = biStarttotal();
+  const biNow = biNowtotal();
+  
+  const motorStart = FIMmotorstarttotal();
+  const motorNow = FIMmotornowtotal();
+  const cognitiveStart = FIMcognitivestarttotal();
+  const cognitiveNow = FIMcognitivenowtotal();
+
+  // FIM総合計の計算・反映
+  const totalStartEl = document.getElementById('start-total');
+  if (totalStartEl) {
+    totalStartEl.textContent = motorStart + cognitiveStart;
+  }
+
+  const totalNowEl = document.getElementById('now-total');
+  if (totalNowEl) {
+    totalNowEl.textContent = motorNow + cognitiveNow;
+  }
+}
+
+// --- 画面表示時・操作時・印刷時のイベント一括登録 ---
+
+// 1. ページ読み込み完了時
+document.addEventListener('DOMContentLoaded', () => {
+  recalculateAll();
+  updatePrintValues();
+
+  // プルダウン変更時に再計算＆印刷テキスト更新
+  document.querySelectorAll('select').forEach(select => {
+    select.addEventListener('change', () => {
+      recalculateAll();
+      updatePrintValues();
+    });
+  });
+});
+
+// 2. 印刷プレビューが開く直前
+window.addEventListener('beforeprint', updatePrintValues);
+
+// 3. フォーム入力・変更時にリアルタイムで印刷テキスト更新
+document.addEventListener('input', updatePrintValues);
+document.addEventListener('change', updatePrintValues);
+
+//JSON//////////////////////////////////////////////////////////////////////////
+// =============================================================================
+// 1. 単体JSONファイルからの読み込み（ファイル選択時）
+// =============================================================================
+function loadData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      
+      // 単一オブジェクトか、配列の1件目かを判定
+      const targetObj = Array.isArray(data) ? data[0] : data;
+      
+      let matchCount = 0;
+      Object.keys(targetObj).forEach(key => {
+        const elem = document.getElementById(key);
+        if (elem) {
+          elem.value = targetObj[key];
+          matchCount++;
+        }
+      });
+
+      if (matchCount === 0) {
+        alert('警告: JSONデータと一致する id がHTML上に見つかりませんでした。\nHTML側の id 設定をご確認ください。');
+      } else {
+        alert(`データを読み込みました！（${matchCount} 項目の値をセット）`);
+      }
+    } catch (err) {
+      alert('ファイルの読み込みに失敗しました。JSONの形式をご確認ください。');
+    }
+  };
+  reader.readAsText(file);
+}
+
+// =============================================================================
+// 2. 単体JSONファイルとしてのダウンロード保存
+// =============================================================================
+function saveData() {
+  const data = {};
+  
+  document.querySelectorAll('input, select, textarea').forEach(elem => {
+    if (elem.id) {
+      data[elem.id] = elem.value;
+    }
+  });
+
+  const fileName = data['name'] ? `${data['name']}.json` : '目標設定シート.json';
+  const jsonStr = JSON.stringify(data, null, 2);
+  const blob = new Blob([jsonStr], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// =============================================================================
+// 3. 一覧画面（index.html）からの遷移・データ復元処理
+// =============================================================================
+window.addEventListener('DOMContentLoaded', () => {
+  const allDataList = JSON.parse(sessionStorage.getItem('commonGoalData') || '[]');
+  const editTargetId = sessionStorage.getItem('editTargetId');
+
+  if (editTargetId) {
+    const targetData = allDataList.find(item => item['unique-id'] === editTargetId);
+    if (targetData) {
+      Object.keys(targetData).forEach(key => {
+        const elem = document.getElementById(key);
+        if (elem) {
+          elem.value = targetData[key];
+        }
+      });
+    }
+  }
+});
+
+// =============================================================================
+// 4. 「保存して一覧へ戻る」ボタン用処理
+// =============================================================================
+function saveAndReturn() {
+  const currentData = {};
+
+  document.querySelectorAll('input, select, textarea').forEach(elem => {
+    if (elem.id) {
+      currentData[elem.id] = elem.value;
+    }
+  });
+
+  let allDataList = JSON.parse(sessionStorage.getItem('commonGoalData') || '[]');
+  const editTargetId = sessionStorage.getItem('editTargetId');
+
+  if (editTargetId) {
+    const index = allDataList.findIndex(item => item['unique-id'] === editTargetId);
+    if (index >= 0) {
+      currentData['unique-id'] = editTargetId;
+      allDataList[index] = currentData;
+    }
+  } else {
+    currentData['unique-id'] = Date.now().toString();
+    allDataList.push(currentData);
+  }
+
+  sessionStorage.setItem('commonGoalData', JSON.stringify(allDataList));
+  sessionStorage.removeItem('editTargetId');
+  
+  alert('一覧データに追加・更新しました。');
+  window.location.href = 'index.html';
+}
+</script>
+</body>
+</html>

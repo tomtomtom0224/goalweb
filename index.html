@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>目標設定支援・管理シート 管理システム</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background-color: #f4f6f8; }
+    .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    h1 { font-size: 20px; margin-top: 0; border-bottom: 2px solid #333; padding-bottom: 10px; }
+    .control-panel { background: #eef2f5; padding: 15px; border-radius: 6px; margin-bottom: 20px; }
+    .file-area { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+    .search-bar { display: flex; gap: 10px; flex-direction: column;}
+    .search-bar input { flex: 1; padding: 8px; font-size: 15px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+    th { background-color: #f0f0f0; }
+    button { padding: 8px 14px; cursor: pointer; border-radius: 4px; border: 1px solid #ccc; background: #fff; }
+    button.primary { background: #dcdcf1; color: rgb(0, 0, 0); border: none; }
+    button.success { background: #cff3d7; color: rgb(0, 0, 0); border: none; }
+    button.danger { background: #f58c97; color: rgb(0, 0, 0); border: none; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>目標設定支援・管理シート 管理システム</h1>
+
+    <!-- 検索バー -->
+     <div class="control-panel">
+      <label><strong>2.行う操作を選んでください:</strong></label><br>
+    <div class="search-bar">
+      <br>
+      <div><strong>　　　新　規　作　成:</strong>
+      <button type="button" class="primary" onclick="createNew()">作成</button>
+      </div>
+      <div><strong>　　　患者氏名で検索:</strong>
+      <input type="text" id="search-keyword" placeholder="患者氏名を入力..." oninput="renderList()">
+      </div>
+      <div><small>　　　　　　※検索は部分一致です。患者氏名を入力すると、該当するデータが一覧表示されます。</small>
+      
+</div>
+    </div>
+  </div>
+
+  <!-- データ一覧テーブル -->
+  <table>
+    <thead>
+      <tr>
+        <th>作成日</th>
+        <th>患者氏名</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody id="result-list">
+      <tr><td colspan="3" style="text-align:center;">共通JSONファイルを選択するか、新規作成してください</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+
+
+// GitHub上に置いたJSONファイルの直リンク（Raw URL）
+const GITHUB_JSON_URL = 'https://raw.githubusercontent.com/ユーザー名/リポジトリ名/main/data.json';
+
+let allDataList = [];
+
+// 画面読み込み時に GitHub から自動取得
+window.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const response = await fetch(GITHUB_JSON_URL);
+    if (!response.ok) throw new Error('通信エラー');
+    
+    allDataList = await response.json();
+    
+    // 一覧画面に反映
+    renderList();
+    console.log('GitHubから最新データを読み込みました');
+  } catch (error) {
+    console.error('読み込み失敗:', error);
+    alert('GitHubからのデータ読み込みに失敗しました。');
+  }
+});
+
+// JSONファイル読み込み
+function loadCommonJSON(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      allDataList = Array.isArray(data) ? data : [data];
+      saveToSession();
+      renderList();
+      alert(`読み込み完了: ${allDataList.length} 件のデータが存在します`);
+    } catch (err) {
+      alert('JSONファイルの読み込みに失敗しました。');
+    }
+  };
+  reader.readAsText(file);
+}
+
+// 一覧表示・検索
+function renderList() {
+  const keyword = document.getElementById('search-keyword').value.trim().toLowerCase();
+  const tbody = document.getElementById('result-list');
+  tbody.innerHTML = '';
+
+  const filtered = allDataList.filter(item => {
+    const name = (item['name'] || '').toString().toLowerCase();
+    return name.includes(keyword);
+  });
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">該当するデータはありません</td></tr>';
+    return;
+  }
+
+  // 作成日で降順ソート（新しい順）
+  filtered.sort((a, b) => (b['created-date'] || '').localeCompare(a['created-date'] || ''));
+
+  filtered.forEach(item => {
+    const name = item['name'] || '名前未設定';
+    const date = item['created-date'] || '日付未設定';
+    const id = item['unique-id'];
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${date}</td>
+      <td>${name}</td>
+      <td>
+        <button type="button" class="primary" onclick="editData('${id}')">修正・編集</button>
+        <button type="button" class="danger" onclick="deleteData('${id}')">削除</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// 新規作成へ
+function createNew() {
+  sessionStorage.removeItem('editTargetId');
+  window.location.href = 'input.html';
+}
+
+// 修正へ
+function editData(id) {
+  sessionStorage.setItem('editTargetId', id);
+  window.location.href = 'input.html';
+}
+
+// 削除
+function deleteData(id) {
+  if (confirm('このデータを一覧から削除しますか？')) {
+    allDataList = allDataList.filter(item => item['unique-id'] !== id);
+    saveToSession();
+    renderList();
+  }
+}
+
+// 全データを1つのJSONとして保存（ダウンロード）
+function exportCommonJSON() {
+  if (allDataList.length === 0) {
+    alert('保存するデータがありません。');
+    return;
+  }
+  const jsonStr = JSON.stringify(allDataList, null, 2);
+  const blob = new Blob([jsonStr], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `goal_sheets_all_${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function saveToSession() {
+  sessionStorage.setItem('commonGoalData', JSON.stringify(allDataList));
+}
+</script>
+
+</body>
+</html>
