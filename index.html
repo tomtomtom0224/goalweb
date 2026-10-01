@@ -8,8 +8,7 @@
     .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
     h1 { font-size: 20px; margin-top: 0; border-bottom: 2px solid #333; padding-bottom: 10px; }
     .control-panel { background: #eef2f5; padding: 15px; border-radius: 6px; margin-bottom: 20px; }
-    .file-area { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-    .search-bar { display: flex; gap: 10px; flex-direction: column;}
+    .search-bar { display: flex; gap: 10px; flex-direction: column; }
     .search-bar input { flex: 1; padding: 8px; font-size: 15px; }
     table { width: 100%; border-collapse: collapse; margin-top: 15px; }
     th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
@@ -25,19 +24,21 @@
 <div class="container">
   <h1>目標設定支援・管理シート 管理システム</h1>
 
-    <!-- 検索バー -->
-     <div class="control-panel">
+  <!-- 検索・作成エリア -->
+  <div class="control-panel">
     <div class="search-bar">
       <br>
-      <div><strong>　　　新　規　作　成:</strong>
-      <button type="button" class="primary" onclick="createNew()">作成</button>
+      <div>
+        <strong>新規作成:</strong>
+        <button type="button" class="primary" onclick="createNew()">作成</button>
       </div>
-      <div><strong>　　　患者氏名で検索:</strong>
-      <input type="text" id="search-keyword" placeholder="患者氏名を入力..." oninput="renderList()">
+      <div>
+        <strong>患者氏名で検索:</strong>
+        <input type="text" id="search-keyword" placeholder="患者氏名を入力..." oninput="renderList()">
       </div>
-      <div><small>　　　　　　※検索は部分一致です。患者氏名を入力すると、該当するデータが一覧表示されます。</small>
-      
-</div>
+      <div>
+        <small>※検索は部分一致です。患者氏名を入力すると、該当するデータが一覧表示されます。</small>
+      </div>
     </div>
   </div>
 
@@ -51,28 +52,38 @@
       </tr>
     </thead>
     <tbody id="result-list">
-      <tr><td colspan="3" style="text-align:center;">共通JSONファイルを選択するか、新規作成してください</td></tr>
+      <tr><td colspan="3" style="text-align:center;">データを読み込み中...</td></tr>
     </tbody>
   </table>
 </div>
 
 <script>
-
-
 // GitHub上に置いたJSONファイルの直リンク（Raw URL）
 const GITHUB_JSON_URL = 'https://tomtomtom0224.github.io/goalweb/data.json';
 
 let allDataList = [];
 
-// 画面読み込み時に GitHub から自動取得
+// 画面読み込み時にデータ取得
 window.addEventListener('DOMContentLoaded', async () => {
+  // すでにsessionStorageに最新データがある場合は優先（編集後の反映などのため）
+  const sessionData = sessionStorage.getItem('commonGoalData');
+  if (sessionData) {
+    try {
+      allDataList = JSON.parse(sessionData);
+      renderList();
+      return;
+    } catch (e) {
+      console.error('SessionStorageのパースに失敗しました', e);
+    }
+  }
+
+  // なければGitHubから初期ロード
   try {
     const response = await fetch(GITHUB_JSON_URL);
     if (!response.ok) throw new Error('通信エラー');
     
     allDataList = await response.json();
-    
-    // 一覧画面に反映
+    saveToSession();
     renderList();
     console.log('GitHubから最新データを読み込みました');
   } catch (error) {
@@ -147,7 +158,7 @@ function createNew() {
 // 修正へ
 function editData(id) {
   sessionStorage.setItem('editTargetId', id);
-  window.location.href = 'input.html';
+  window.location.href = `input.html?id=${id}`;
 }
 
 // 削除

@@ -951,7 +951,9 @@
 </div>
 
 <script>
+// =============================================================================
 // 1. 印刷用テキスト（日付やあり・なし等）を更新する共通関数
+// =============================================================================
 function updatePrintValues() {
   // すべての入力要素（input, select, textarea）を巡回
   document.querySelectorAll('input, select, textarea').forEach(function(el) {
@@ -977,7 +979,9 @@ function updatePrintValues() {
   });
 }
 
+// =============================================================================
 // 2. 共通の集計・表示関数
+// =============================================================================
 function calculateSubtotal(selectClass, targetId) {
   let total = 0;
   const selects = document.querySelectorAll(selectClass);
@@ -1040,10 +1044,31 @@ function recalculateAll() {
   }
 }
 
-// --- 画面表示時・操作時・印刷時のイベント一括登録 ---
-
-// 1. ページ読み込み完了時
+// =============================================================================
+// 3. 画面読み込み時・イベント一括登録
+// =============================================================================
 document.addEventListener('DOMContentLoaded', () => {
+  // --- 修正・編集データの復元処理 ---
+  const allDataList = JSON.parse(sessionStorage.getItem('commonGoalData') || '[]');
+  
+  // URLパラメータ（?id=...）または sessionStorage からIDを取得
+  const urlParams = new URLSearchParams(window.location.search);
+  let editTargetId = urlParams.get('id') || sessionStorage.getItem('editTargetId');
+
+  if (editTargetId) {
+    const targetData = allDataList.find(item => item['unique-id'] === editTargetId);
+    if (targetData) {
+      Object.keys(targetData).forEach(key => {
+        const elem = document.getElementById(key);
+        if (elem) {
+          elem.value = targetData[key];
+        }
+      });
+      sessionStorage.setItem('editTargetId', editTargetId);
+    }
+  }
+
+  // 初期再計算 ＆ 印刷用表示更新
   recalculateAll();
   updatePrintValues();
 
@@ -1056,16 +1081,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// 2. 印刷プレビューが開く直前
+// 印刷プレビュー直前・フォーム変更時イベント
 window.addEventListener('beforeprint', updatePrintValues);
-
-// 3. フォーム入力・変更時にリアルタイムで印刷テキスト更新
 document.addEventListener('input', updatePrintValues);
 document.addEventListener('change', updatePrintValues);
 
-//JSON//////////////////////////////////////////////////////////////////////////
 // =============================================================================
-// 1. 単体JSONファイルからの読み込み（ファイル選択時）
+// 4. JSONファイルからの読み込み（ファイル選択時）
 // =============================================================================
 function loadData(event) {
   const file = event.target.files[0];
@@ -1075,8 +1097,6 @@ function loadData(event) {
   reader.onload = function(e) {
     try {
       const data = JSON.parse(e.target.result);
-      
-      // 単一オブジェクトか、配列の1件目かを判定
       const targetObj = Array.isArray(data) ? data[0] : data;
       
       let matchCount = 0;
@@ -1091,6 +1111,8 @@ function loadData(event) {
       if (matchCount === 0) {
         alert('警告: JSONデータと一致する id がHTML上に見つかりませんでした。\nHTML側の id 設定をご確認ください。');
       } else {
+        recalculateAll();
+        updatePrintValues();
         alert(`データを読み込みました！（${matchCount} 項目の値をセット）`);
       }
     } catch (err) {
@@ -1101,7 +1123,7 @@ function loadData(event) {
 }
 
 // =============================================================================
-// 2. 単体JSONファイルとしてのダウンロード保存
+// 5. 単体JSONファイルとしてのダウンロード保存
 // =============================================================================
 function saveData() {
   const data = {};
@@ -1125,27 +1147,7 @@ function saveData() {
 }
 
 // =============================================================================
-// 3. 一覧画面（index.html）からの遷移・データ復元処理
-// =============================================================================
-window.addEventListener('DOMContentLoaded', () => {
-  const allDataList = JSON.parse(sessionStorage.getItem('commonGoalData') || '[]');
-  const editTargetId = sessionStorage.getItem('editTargetId');
-
-  if (editTargetId) {
-    const targetData = allDataList.find(item => item['unique-id'] === editTargetId);
-    if (targetData) {
-      Object.keys(targetData).forEach(key => {
-        const elem = document.getElementById(key);
-        if (elem) {
-          elem.value = targetData[key];
-        }
-      });
-    }
-  }
-});
-
-// =============================================================================
-// 4. 「保存して一覧へ戻る」ボタン用処理
+// 6. 「保存して一覧へ戻る」ボタン用処理
 // =============================================================================
 function saveAndReturn() {
   const currentData = {};
@@ -1159,13 +1161,23 @@ function saveAndReturn() {
   let allDataList = JSON.parse(sessionStorage.getItem('commonGoalData') || '[]');
   const editTargetId = sessionStorage.getItem('editTargetId');
 
+  // 作成日が未入力の場合は本日日付をデフォルトセット
+  if (!currentData['created-date']) {
+    const today = new Date().toISOString().split('T')[0];
+    currentData['created-date'] = today;
+  }
+
   if (editTargetId) {
     const index = allDataList.findIndex(item => item['unique-id'] === editTargetId);
     if (index >= 0) {
       currentData['unique-id'] = editTargetId;
       allDataList[index] = currentData;
+    } else {
+      currentData['unique-id'] = editTargetId;
+      allDataList.push(currentData);
     }
   } else {
+    // 新規作成時：ユニークIDを採番
     currentData['unique-id'] = Date.now().toString();
     allDataList.push(currentData);
   }
